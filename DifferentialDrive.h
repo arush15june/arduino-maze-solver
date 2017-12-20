@@ -2,16 +2,7 @@
 #ifndef DifferentialDrive_h
 #define DifferentialDrive_h
 
-
 #include "Arduino.h"
-
-enum direction {
-    FORWARD,
-    BACKWARD,
-    STOP,
-    LEFT,
-    RIGHT
-};
 
 class DifferentialDrive {
     
