@@ -11,18 +11,20 @@ LineSensor::LineSensor() {
 
 }
 
-LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][]) {
+LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][2]) {
         n_sensors = noOfSensors;
-        middleSensorPin = pins[n_sensors/2]
-        middleSensorRange = { ranges[n_sensors/2][0], ranges[n_sensors/2][1] }
+        middleSensorPin = pins[n_sensors/2];
+        middleSensorRange[0] = ranges[n_sensors/2][0];
+        middleSensorRange[1] = ranges[n_sensors/2][1];
 
 
         n_left = 0;
         // Add pins and ranges to right sensor array
-        for(int i = 0;i < n_sensors1/2; i++) {
+        for(int i = 0;i < n_sensors/2; i++) {
             n_left += 1;
-            leftSensors[i] = pins[i]
-            leftSensorsRange[i] = { ranges[i][0], ranges[i][1] }
+            leftSensors[i] = pins[i];
+            leftSensorsRange[i][0] = ranges[i][0]; 
+            leftSensorsRange[i][1] = ranges[i][1];
         }
 
         n_right = 0;
@@ -30,7 +32,8 @@ LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][]) {
         for(int i = n_sensors/2+1, j = 0;i < n_sensors; i++, j++) {
             n_right += 1;
             rightSensors[j] = pins[j];
-            rightSensorsRange[j] = { ranges[i][0], ranges[i][1] }
+            rightSensorsRange[j][0] = ranges[i][0];
+            rightSensorsRange[j][1] = ranges[i][1];
         }
 
         // Enable all pins for Input
@@ -44,14 +47,14 @@ LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][]) {
 // int LineSensor::find()
 //      Returns the current direction
 // 
-int LineSensor::find() {
+direction LineSensor::find() {
     direction sensed = STOP;
 
     int left = 0;
     for(int i = 0; i < n_left; i++) {
-        pinVal = analogRead(leftSensors[i]);
-        minVal = leftSensorsRange[i][0];
-        maxVal = leftSensorsRange[i][1];
+        int pinVal = analogRead(leftSensors[i]);
+        int minVal = leftSensorsRange[i][0];
+        int maxVal = leftSensorsRange[i][1];
 
         if(pinVal <= maxVal && pinVal >= minVal) {
             left += 1;
@@ -60,9 +63,9 @@ int LineSensor::find() {
 
     int middle = 0;
     {
-        pinVal = analogRead(middleSensorPin);
-        minVal = middleSensorRange[0];
-        maxVal = middleSensorRange[1];
+        int pinVal = analogRead(middleSensorPin);
+        int minVal = middleSensorRange[0];
+        int maxVal = middleSensorRange[1];
 
         if(pinVal <= maxVal && pinVal >= minVal) {
             middle += 1;
@@ -73,9 +76,9 @@ int LineSensor::find() {
 
     int right = 0;
     for(int i = 0; i < n_left; i++) {
-        pinVal = analogRead(rightSensors[i]);
-        minVal = rightSensorsRange[i][0];
-        maxVal = rightSensorsRange[i][1];
+        int pinVal = analogRead(rightSensors[i]);
+        int minVal = rightSensorsRange[i][0];
+        int maxVal = rightSensorsRange[i][1];
 
         if(pinVal <= maxVal && pinVal >= minVal) {
             right += 1;
