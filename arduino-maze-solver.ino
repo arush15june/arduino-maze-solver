@@ -86,21 +86,25 @@ void setup() {
 
 void loop() {
 
-  direction go = LDR.find();
+  direction go = LDR.find(); 
 
   if(go == STOP || go == UNKNOWN) {
-    dd.stop()
+    Serial.println("STOP bot");
+    dd.stop();
   }
   else if(go == FORWARD) {
+    Serial.println("Going Forward");
     dd.forward();
   }
   else if(go == LEFT) {
+    Serial.print("Going LEFT");
     dd.stop();
     while(LDR.find() != FORWARD) {
       dd.left();
     }
   }
   else if(go == RIGHT) {
+    Serial.println("Going RIGHT");
     dd.stop();
     while(LDR.find() != FORWARD) {
       dd.right();
