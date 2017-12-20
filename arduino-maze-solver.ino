@@ -86,4 +86,25 @@ void setup() {
 
 void loop() {
 
+  direction go = LDR.find();
+
+  if(go == STOP || go == UNKNOWN) {
+    dd.stop()
+  }
+  else if(go == FORWARD) {
+    dd.forward();
+  }
+  else if(go == LEFT) {
+    dd.stop();
+    while(LDR.find() != FORWARD) {
+      dd.left();
+    }
+  }
+  else if(go == RIGHT) {
+    dd.stop();
+    while(LDR.find() != FORWARD) {
+      dd.right();
+    }
+  }
+
 }
