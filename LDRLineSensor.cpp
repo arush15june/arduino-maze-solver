@@ -13,16 +13,22 @@ LineSensor::LineSensor() {
 
 LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][]) {
         n_sensors = noOfSensors;
-        int middleSensor = pins[n_sensors/2]
-        int middleSensorRange = { ranges[n_sensors/2][0], ranges[n_sensors/2][1] }
+        middleSensorPin = pins[n_sensors/2]
+        middleSensorRange = { ranges[n_sensors/2][0], ranges[n_sensors/2][1] }
 
+
+        n_left = 0;
         // Add pins and ranges to right sensor array
         for(int i = 0;i < n_sensors1/2; i++) {
+            n_left += 1;
             leftSensors[i] = pins[i]
             leftSensorsRange[i] = { ranges[i][0], ranges[i][1] }
         }
+
+        n_right = 0;
         // Add pins and ranges to left sensor array
         for(int i = n_sensors/2+1, j = 0;i < n_sensors; i++, j++) {
+            n_right += 1;
             rightSensors[j] = pins[j];
             rightSensorsRange[j] = { ranges[i][0], ranges[i][1] }
         }
@@ -34,7 +40,78 @@ LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][]) {
 
 }
 
-LineSensor::find() {
-    // TODO
+
+// int LineSensor::find()
+//      Returns the current direction
+// 
+int LineSensor::find() {
+    direction sensed = STOP;
+
+    int left = 0;
+    for(int i = 0; i < n_left; i++) {
+        pinVal = analogRead(leftSensors[i]);
+        minVal = leftSensorsRange[i][0];
+        maxVal = leftSensorsRange[i][1];
+
+        if(pinVal <= maxVal && pinVal >= minVal) {
+            left += 1;
+        }
+    }
+
+    int middle = 0;
+    {
+        pinVal = analogRead(middleSensorPin);
+        minVal = middleSensorRange[0];
+        maxVal = middleSensorRange[1];
+
+        if(pinVal <= maxVal && pinVal >= minVal) {
+            middle += 1;
+        }
+
+    }
+
+
+    int right = 0;
+    for(int i = 0; i < n_left; i++) {
+        pinVal = analogRead(rightSensors[i]);
+        minVal = rightSensorsRange[i][0];
+        maxVal = rightSensorsRange[i][1];
+
+        if(pinVal <= maxVal && pinVal >= minVal) {
+            right += 1;
+        }
+    }
+
+    // If left, right and middle all are 1
+    // A white spot is there
+    // direction = STOP
+    if( (left && middle && right) ) {
+        sensed = STOP;
+    }
+    // If left, right and middle all are 0
+    // direction = dead end
+    else if( !(left && middle && right) ) {
+        sensed = END;
+    }
+    // if only middle is 1
+    // direction = forward
+    else if( (!left && middle && !right) ) {
+        sensed = FORWARD;
+    } 
+    // if left is 1 or left and middle borth are 1
+    // sensed = left
+    else if( (left && !middle && !right) || (left && middle && !right) ) {
+        sensed = LEFT;
+    }
+    // if right is 1 or middle and right are 1
+    // sensed = right
+    else if( (!left && !middle && right) || (!left && middle && right) ) {
+        sensed = RIGHT;
+    } 
+    else {
+        sensed = UNKNOWN;
+    }
+
+    return sensed;
 
 }

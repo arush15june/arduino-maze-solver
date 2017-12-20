@@ -7,7 +7,9 @@ enum direction {
     BACKWARD,
     STOP,
     LEFT,
-    RIGHT
+    RIGHT,
+    END,
+    UNKNOWN
 };  
 
 class LineSensor {
@@ -27,11 +29,15 @@ private:
     int middleSensorRange[];
     // Range array for the middle sensor
 
+    int n_left;
+    // No Of Sensors on the left
     int leftSensors[]; 
     // Pins for the sensors on left side
     int leftSensorsRange[][];
     // Ranges for the left sensors
-    
+
+    int n_right;
+    // No Of Sensors on the right
     int rightSensors[];
     // Pins For The Sensors on the right side
     int rightSensorsRange[];
