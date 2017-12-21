@@ -48,7 +48,6 @@ LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][2]) {
 //      Returns the current direction
 // 
 direction LineSensor::find() {
-    direction sensed = STOP;
 
     int left = 0;
     for(int i = 0; i < n_left; i++) {
@@ -73,9 +72,8 @@ direction LineSensor::find() {
 
     }
 
-
     int right = 0;
-    for(int i = 0; i < n_left; i++) {
+    for(int i = 0; i < n_right; i++) {b``
         int pinVal = analogRead(rightSensors[i]);
         int minVal = rightSensorsRange[i][0];
         int maxVal = rightSensorsRange[i][1];
@@ -88,33 +86,46 @@ direction LineSensor::find() {
     // If left, right and middle all are 1
     // A white spot is there
     // direction = STOP
-    if( (left && middle && right) ) {
-        sensed = STOP;
-    }
-    // If left, right and middle all are 0
-    // direction = dead end
-    else if( !(left && middle && right) ) {
-        sensed = END;
-    }
-    // if only middle is 1
-    // direction = forward
-    else if( (!left && middle && !right) ) {
-        sensed = FORWARD;
-    } 
-    // if left is 1 or left and middle borth are 1
-    // sensed = left
-    else if( (left && !middle && !right) || (left && middle && !right) ) {
-        sensed = LEFT;
-    }
-    // if right is 1 or middle and right are 1
-    // sensed = right
-    else if( (!left && !middle && right) || (!left && middle && right) ) {
-        sensed = RIGHT;
-    } 
-    else {
-        sensed = UNKNOWN;
-    }
+    // if( (left && middle && right) ) {
+    //     sensed = STOP;
+    // }
+    // // If left, right and middle all are 0
+    // // direction = dead end
+    // else if( !(left && middle && right) ) {
+    //     sensed = END;
+    // }
+    // // if only middle is 1
+    // // direction = forward
+    // else if( (!left && middle && !right) ) {
+    //     sensed = FORWARD;
+    // } 
+    // // if left is 1 or left and middle borth are 1
+    // // sensed = left
+    // else if( (left && !middle && !right) || (left && middle && !right) ) {
+    //     sensed = LEFT;
+    // }
+    // // if right is 1 or middle and right are 1
+    // // sensed = right
+    // else if( (!left && !middle && right) || (!left && middle && right) ) {
+    //     sensed = RIGHT;
+    // } 
+    // else {
+    //     sensed = UNKNOWN;   
+    // }
+    
+    direction senses[] = {STOP, RIGHT, FORWARD, RIGHT, LEFT, UNKNOWN, LEFT, END};
+    // Lookup Table
+    // left middle right - integer - direction
+    // 0    0       0       0           STOP
+    // 0    0       0       0           RIGHT
+    // 0    0       0       0           FORWARD
+    // 0    0       0       0           RIGHT
+    // 0    0       0       0           LEFT
+    // 0    0       0       0           UNKNOWN
+    // 0    0       0       0           LEFT
+    // 0    0       0       0           END
 
-    return sensed;
+    bitmask = right | ( middle << 1) | (left << 2);
+    return senses[bitmask];
 
 }
