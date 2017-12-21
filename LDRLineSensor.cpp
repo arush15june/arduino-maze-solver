@@ -12,34 +12,34 @@ LineSensor::LineSensor() {
 }
 
 LineSensor::LineSensor(int noOfSensors, int pins[], int ranges[][2]) {
-        n_sensors = noOfSensors;
-        middleSensorPin = pins[n_sensors/2];
-        middleSensorRange[0] = ranges[n_sensors/2][0];
-        middleSensorRange[1] = ranges[n_sensors/2][1];
+    n_sensors = noOfSensors;
+    middleSensorPin = pins[n_sensors/2];
+    middleSensorRange[0] = ranges[n_sensors/2][0];
+    middleSensorRange[1] = ranges[n_sensors/2][1];
 
 
-        n_left = 0;
-        // Add pins and ranges to right sensor array
-        for(int i = 0;i < n_sensors/2; i++) {
-            n_left += 1;
-            leftSensors[i] = pins[i];
-            leftSensorsRange[i][0] = ranges[i][0]; 
-            leftSensorsRange[i][1] = ranges[i][1];
-        }
+    n_left = 0;
+    // Add pins and ranges to right sensor array
+    for(int i = 0;i < n_sensors/2; i++) {
+        n_left += 1;
+        leftSensors[i] = pins[i];
+        leftSensorsRange[i][0] = ranges[i][0]; 
+        leftSensorsRange[i][1] = ranges[i][1];
+    }
 
-        n_right = 0;
-        // Add pins and ranges to left sensor array
-        for(int i = n_sensors/2+1, j = 0;i < n_sensors; i++, j++) {
-            n_right += 1;
-            rightSensors[j] = pins[j];
-            rightSensorsRange[j][0] = ranges[i][0];
-            rightSensorsRange[j][1] = ranges[i][1];
-        }
+    n_right = 0;
+    // Add pins and ranges to left sensor array
+    for(int i = n_sensors/2+1, j = 0;i < n_sensors; i++, j++) {
+        n_right += 1;
+        rightSensors[j] = pins[j];
+        rightSensorsRange[j][0] = ranges[i][0];
+        rightSensorsRange[j][1] = ranges[i][1];
+    }
 
-        // Enable all pins for Input
-        for(int i = 0; i < n_sensors; i++) {
-            pinMode(pins[i], INPUT);
-        }
+    // Enable all pins for Input
+    for(int i = 0; i < n_sensors; i++) {
+        pinMode(pins[i], INPUT);
+    }
 
 }
 
