@@ -112,18 +112,18 @@ direction LineSensor::find() {
     // else {
     //     sensed = UNKNOWN;   
     // }
-    
+
     direction senses[] = {STOP, RIGHT, FORWARD, RIGHT, LEFT, UNKNOWN, LEFT, END};
     // Lookup Table
     // left middle right - integer - direction
     // 0    0       0       0           STOP
-    // 0    0       0       0           RIGHT
-    // 0    0       0       0           FORWARD
-    // 0    0       0       0           RIGHT
-    // 0    0       0       0           LEFT
-    // 0    0       0       0           UNKNOWN
-    // 0    0       0       0           LEFT
-    // 0    0       0       0           END
+    // 0    0       1       1           RIGHT
+    // 0    1       0       2           FORWARD
+    // 0    1       1       3           RIGHT
+    // 1    0       0       4           LEFT
+    // 1    1       1       5           UNKNOWN
+    // 1    0       0       6           LEFT
+    // 1    1       1       7           END
 
     bitmask = right | ( middle << 1) | (left << 2);
     return senses[bitmask];
